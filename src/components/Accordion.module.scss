@@ -1,0 +1,89 @@
+$__CSS-MODULE__: true;
+@import 'assets/styles/mixins/main.scss';
+
+.container {
+    //background-color: rgba(255, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    //gap: var(--atomX3);
+    position: relative;
+
+    .item {
+        &:not(:last-child) {
+            border-bottom: var(--pxlw1) solid var(--clr-stroke);
+        }
+    
+        flex: 1;
+        &:not(.active) {
+            flex: unset;
+            overflow: hidden;
+            .content {
+                opacity: 0;
+                position: absolute; // using "display: none;" would break the transitions so I use "position: absolute;" to remove the element from the layout flow without entirely removing it.
+                visibility: hidden;
+            }
+
+            .arrow {
+                transform: rotate(0deg);
+            }
+        }
+
+        .arrow {
+            transition: transform 0.1s ease-in-out;
+            transform: rotate(180deg);
+            position: absolute;
+            right: calc(var(--padding) - var(--scrollbar-width, 0));
+        }
+
+        
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+        height: auto;
+        --padding: var(--atomX3);
+        //background-color: red;
+        
+        .header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--atomX1);
+            @include iconStyle(var(--pxlw3));
+            z-index: 9999;
+           
+            position: sticky;
+            top: 0;
+
+            padding: var(--padding);
+            //background-color: var(--clr-bg);
+            background: linear-gradient(to bottom, var(--clr-bg) 0%, var(--clr-bg) 75%, transparent 100%);
+            //background-color: red;
+            width: 100%;
+            font-size: var(--atomX4);
+
+            .title {
+                font-size: 1em;
+                font-weight: var(--f-medium);
+            }
+            
+            .icon {
+                height: 0.8em;
+                width: 0.8em;
+            }
+        }
+        .content {
+            transition: translate 1.3s ease-in-out;
+            padding: var(--padding);
+            padding-top: 0;
+            padding-right: var(--atomX1);
+            
+            word-wrap: break-word;
+
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+            //background-color: red;
+        }
+    }
+}

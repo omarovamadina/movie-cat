@@ -1,0 +1,134 @@
+// Writing classnames in camelCase instead of kebab-case as this is a CSS module (and not a regular CSS).
+
+.container {
+    //-webkit-filter: blur(0px);
+    backdrop-filter: blur(0px);
+    /* @@note
+        There was an unexpected behaviour with CSS where the backdrop-filter of child elements of .container would break
+    */
+
+
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    //--Optional image that the blurOverlay component can receive---
+    .image {
+        // this is already enclosed within the .container selector thanks to the SCSS syntax, otherwise we would write it like ".container .image".
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    //--Optional simple text content that the blurOverlay component can receive--
+    .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    /*
+    --Blurry gradient-overlay effect for the component--
+
+    This is the main purpose of this component.
+    We want to achieve an effect where anything rendered under this component will be blurred wtih a gradient blur,
+    gradually decreasing blur intensity towards an angle.
+
+    Normally when doing something like this with CSS, we would create a single HTML element that blurs the backdrop, 
+    and fade that element in one direction by using a gradient as a mask,
+
+    We will use the same method, but slightly differently. 
+    since we don't want an intense blur to fade-out but rather the blur intensity to gradualy decrease in one direction.
+    
+    What we do differently is:
+    1. We stack on top of each other multiple overlays, using them as a single overlay.
+    2. Each with an offset starting point for the gradient mask so that the visible part of each subsequent overlay is smaller.
+
+    By doing so, parts of the backdrop underneath the combined overlays will receive the blur effect of more overlay elements than other parts.
+    This will give us the desired result as the parts that have more overlays visible above them will be blurred more. 
+
+    There are other ways to tackle blur effect in CSS so there might be a more performant solution, however, in our case performamce isn't a big factor.
+    */
+    .blurOverlay {
+        
+        // Setting the size and position of all overlays to be based off their parent element (which will be the .container in our HTML).
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        // This line applies a blur of x pixels strength to what is rendered under this this element (.blurOverlay).
+        backdrop-filter: blur(3px);
+
+        // Here we are setting some CSS variables. This kind of variable definition is soemthing that doesn't need SCSS but also works in regular CSS.
+        --o: white; // this is the opaque color of the gradient.
+        --d: calc(1deg * var(--blurAngle, 45)); // this is the angle of the gradient in degrees 0-360.
+        --s: 50%; // this is the starting point of the gradient.
+        --e: 100%; // this is the end point of the gradient.
+
+
+        @each $position, $degree in (twelve-oclock: 0deg, three-oclock: 90deg) {
+            &.#{$position} {
+                --d: $degree;
+            }
+        }
+
+        // Here we define that when the backdrop-filter of this element is changed it should change with a transition (rather than instantly) with a duration of x seconds.
+        transition: backdrop-filter 0.3s ease-in-out;
+
+        /*
+        --Different gradient offsets--
+
+        Each of the overlay elements has a different classname (in addition to .blurOverlay) ranging from blr0 to blr19 (so 20 in Total).
+
+        We use the mask-image property in combination with the linear-gradient to mask each overlay.
+
+        For the style of each next selector we adjust the starting point of the linear gradient ever slightly, until we slowly apprach near --e (the end point of the gradient).
+        We use the calc() CSS function to to calculate the starting point of each gradient using the variables we have defined.
+        
+        Instead of writing the selector for each of the 20 overlays (which is quite tedious and error prone) we can use the @for loop of the SCSS syntax.
+        This will not only duplicate the styling for each of the selectors but it also makes it easier to read.
+
+        The @for loop is also giving us an index value wich we can use to manipulate the values in each duplicate it creates.
+        In our case we will use that to adjust the starting point of the gradient of each iteration.
+
+        We use the calc() CSS function with the combination of the variables we have defined and the index number provided by the @for loop. 
+        */
+        @for $i from 0 through 19 {
+            &.blr#{$i * 5} {
+                mask-image: linear-gradient(var(--d), /* angle of the gradient. */
+                    transparent calc(var(--s) + ((var(--e) - var(--s)) * #{$i * 0.05})), /* starting point of the gradient. */
+                    white var(--e) /* end point of the gradient. */
+                );
+            }
+        }
+    }
+
+    /*
+    --Hover effect--
+
+    If we applied the hover styling with a selector like so ".blurOverlay:hover", it wouldn't apply to all of the overlays as the top-most overlay is blocking the hovering of overlays underneath.
+    This means that only one of the overlays would be affected which is not what we intend since we want them all to act as a single overlay.
+
+    In SCSS the ampersand symbol '&' refers to the parent selector, so "&:hover .blurOverlay" does the same as ".container:hover .blurOverlay" in normal CSS since the .container selector encloses this selector/rule.
+
+    What we are doing essentially is selecting all the .blurOverlay based on their ancestor,
+    in this case, we select them if they have a .container ancestor that is hovered.
+
+    So "&:hover .blurOverlay.hover" applies to a .blurOverlay that is inside a hovered .container, 
+    which is all of the overlays once we hover the container.
+
+    Finally we added .fadeout right afrer the ampersand '&' (without spaces) to only apply this hover effect if the .container also has a .fadeout class.
+    This will allow use to decide with JavaScript logic if the hover effect should apply or not by applying or leaving the .fadeout class in our component's JSX.
+    */
+    &.fadeout:hover .blurOverlay {
+        backdrop-filter: blur(0px);
+    }
+}

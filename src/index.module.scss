@@ -1,0 +1,124 @@
+$__CSS-MODULE__: true;
+@import 'assets/styles/mixins/main.scss';
+@import './reset.css';
+//@import './redAlert.css';
+
+.light {
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Setting measurement varialbles
+    --z: var(--zoom, 1); // Zoom factor inherited from the parent element but with default value.
+    --atom: 4 * var(--z) * 0.77; // Wherever possible we define our measurements as multiplication of this for an atomic design system.
+
+    // Setting variables --atomX1 through --atomX16 to multiplication of the atom for easy access.
+    @for $i from 1 through 16 {
+        --atomX#{$i}: calc(0.1vw * #{$i} * var(--atom));
+    }
+
+    // Setting variables --r1 through --r5 to preset radius variables used for soft corners.
+    --r1: var(--atomX1);
+    @for $i from 2 through 5 {
+        --r#{$i}: calc(var(--r#{$i - 1}) * 2.5);
+    }
+
+    // Setting variables --pxlw1 through --pxlw20 to preset line width variables used for SVG paths.
+
+    // The multiplication factor that makes the 5th line width variable the same width as the fifth font weight. might need to be adjusted if fon't is changed.
+    $lw-multiplier: 0.1; 
+    @for $i from 1 through 20 {
+        --pxlw#{$i}: calc(var(--atomX1) * #{$lw-multiplier} * #{$i});
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Importing font
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    --font-primary: 'Raleway', Arial, sans-serif;
+
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    --font-secondary: 'Barlow Condensed', Arial, sans-serif;
+
+    // Setting shortcut variables for the available font sizes.
+    --f-thin: 100;
+    --f-extra-light: 200;
+    --f-light: 300;
+    --f-regular: 400;
+    --f-medium: 500;
+    --f-semi-bold: 600;
+    --f-bold: 700;
+    --f-extra-bold: 800;
+    --f-black: 900;
+
+    /* @@note
+        It's bad practice to download all the differents font weights of a font family.
+        We are just having them all while we are developing the project and will remove extra ones once we figure out which ones are needed,      
+        Hence the todo comment item above.
+
+        To download less font weights we adjust the utl from the google fonts api to not include their weight numbers.
+    */
+
+    font-family: var(--font-primary);
+    font-size: var(--atomX5);
+
+    --clr-space: #E9F1FA;
+    --clr-bg: #fff;
+    --clr-content: #000;
+    --clr-hover: #2b2b2b;
+
+    // Opacity Options
+    --ooa: 0.17;
+    
+    --clr-stroke: color-mix(in srgb, var(--clr-content) calc(100% * var(--ooa)), transparent); // 88.38% browser. Reference: https://caniuse.com/?search=color-mix
+    /* @@note
+        The rgba() function did not work to set the opacity when giving it variable input for the color,
+        so I used the color-mix() function instead to mix the color with transparent color to reduce the opacity.
+
+        I tried solutions from here: https://stackoverflow.com/questions/40010597
+    */
+    
+
+    
+    --page-width: calc(25.3vw * var(--z)) ; // Multiplying by the zoom factor so page width increases when zooming.
+    --page-gutter: calc((100vw - (var(--page-width)) / 2));
+       
+
+    /* Default styling for icons, using our custom mixins */
+    @include iconStyle(var(--pxlw2), var(--clr-content), var(--clr-content));
+    @include iconStyle(null, transparent, transparent, null, true);
+    @include _allowCascade {
+        svg._icon24 {
+            width: 100%;
+            height: 100%;
+            display: block;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-miterlimit: var(--atomX1);
+
+            .nss {
+                vector-effect: non-scaling-stroke;
+            }
+        }
+    }
+
+    height: fit-content;
+    width: fit-content;
+
+    min-width: 100%;
+    min-height: 100%;
+}
+
+:root{
+    // styling the scrollbars
+    --clr-scrollbar-bg: #E9F1FA;
+    --clr-scrollbar: #00000075;
+    --clr-scrollbar-hover: #000000;
+    --scrollbar-width: calc(0.2vw * var(--zoom, 1));
+    ::-webkit-scrollbar {
+        width: var(--scrollbar-width);
+        height: var(--scrollbar-width);
+        background-color: var(--clr-scrollbar-bg);
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--clr-scrollbar);
+    }
+}
+

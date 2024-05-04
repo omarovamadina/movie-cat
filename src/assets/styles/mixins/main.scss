@@ -1,0 +1,7 @@
+/* @@note
+    The below imports or for "partial SCSS files", meaning files that won't be used on their own but areimported in another SCSS file.
+    The naming convention for partial SCSS files is to start the file names with an underscore.
+    However, when we import them we don't need to use the underscore.
+*/
+@import 'safeCascade';
+@import 'iconStyle';

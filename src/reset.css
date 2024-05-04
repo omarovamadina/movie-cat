@@ -1,0 +1,97 @@
+/* Remove all default styles */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: inherit; /* Base font size relative to viewport width */
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  vertical-align: baseline;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+/* Reset HTML5 elements with default bottom alignment (can be overridden with text-align) */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+  /* Default bottom alignment for most elements */
+  text-align: bottom;
+}
+
+/* Reset list styles with default right alignment (can be overridden with text-align) */
+ol, ul {
+  list-style: none;
+  padding: 0; /* Padding can be set in vw if needed */
+  /* Default right alignment for lists */
+  text-align: right;
+}
+
+/* Reset blockquote styles */
+blockquote, q {
+  quotes: none;
+}
+
+/* Reset table styles */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Reset form element styles */
+input, textarea, button, select {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font-size: 1em;
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+/* Reset button styles */
+button {
+  cursor: pointer;
+}
+
+/* Reset link styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Reset image styles */
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Target everything by default */
+* {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+}
+
+/* Allow selection for text fields and text areas */
+input[type="text"], textarea {
+  -webkit-user-select: auto; /* Safari */
+  -moz-user-select: auto; /* Firefox */
+  -ms-user-select: auto; /* IE/Edge */
+  user-select: auto;
+}
+
+/* Target everything by default */
+* {
+  -webkit-user-drag: none; /* Safari */
+  -moz-user-drag: none; /* Firefox */
+  -ms-user-drag: none; /* IE/Edge */
+  user-drag: none;
+}

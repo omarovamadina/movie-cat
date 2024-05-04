@@ -1,0 +1,41 @@
+/* @@note
+    The comment below (after this @@note block) is in JSDoc format... 
+    CSS/SCSS doesn't support JSDoc meaning the IDE won't pick up on your JSDoc to assist you while coding.
+    Also, CSS/SCSS doesn't have names for its types, so all the type names you see (e.g. CSS.Dimension) are made up.
+    However, it will help us write coherent documentation as JSDoc is a format with well-established standards.
+*/
+
+/**
+ * Mixin function to customize the styling of SVG icons following a custom standard.
+ * The mentioned standard allows specifying in the SVG itself which paths of the SVG will accept which CSS overrides.
+ *
+ * This mixin currently only works in React CSS Modules (and not regular CSS).
+ *
+ * @param {CSS.Dimension} $strokeWidth - The width of the stroke.
+ * @param {Color} $strokeColor - The color of the stroke.
+ * @param {Color} $fillColor - The color to fill the shape with.
+ * @param {String} $variant - The the set of strokes and fills to style. if null, all strokes and fills will be styled.
+ * @param {Boolean} $optional - Whether to set optional parts of the icon instead of required.
+ */
+@mixin iconStyle($strokeWidth: null, $strokeColor: null, $fillColor: null, $variant: null, $optional: null) {
+    $prefix: 'optional-'; @if $optional == null {$prefix: ''}
+    $fillVariant : ''; $strokeVariant : ''; 
+    @if $variant != null { $fillVariant: '.f#{$variant}'; $strokeVariant: '.s#{$variant}'; }
+    @include _allowCascade { 
+        ._icon24 {
+            .#{$prefix}stroke#{$strokeVariant} {
+                @if $strokeWidth != null {
+                    stroke-width: $strokeWidth;
+                }
+                @if $strokeColor != null {
+                    stroke: $strokeColor;
+                }
+            }
+            @if $fillColor != null {
+                .#{$prefix}fill#{$fillVariant} {
+                    fill: $fillColor;
+                }
+            }
+        }
+    }
+}

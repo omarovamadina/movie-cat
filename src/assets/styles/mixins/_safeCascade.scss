@@ -1,0 +1,41 @@
+// setting $__CSS-MODULE__ to a defualt value of null if it wasn't defined.
+$__CSS-MODULE__: null !default; 
+
+/**
+ * Mixin wrapper safely allowing enclosed styles to cascade outside a React CSS module.
+ * Styles enclosed by this mixin only apply if the element selected by the parent selector has the '_allowCascade' class.
+ * This mixen requires the $__CSS-MODULE__ variable to be defined and set to either true or false.
+ *
+ * @throws {Error} SCSS @error is used if the value of $__CSS-MODULE__ is neither true nor false.
+ * @throws {Error} SCSS compile error when used in the top level of a SCSS file (i.e. when it's not enclosed in a selector).
+ */
+@mixin _allowCascade {
+    @if $__CSS-MODULE__ == null or ($__CSS-MODULE__ != true and $__CSS-MODULE__ != false) {
+        // If it's unknown from $__CSS-MODULE__ whether the file is a React CSS Module or not, throw a SCSS compile error.
+        @error "$__CSS-MODULE__ was neither true nor false.";
+    }
+    @else if $__CSS-MODULE__ == true {
+        // If file is a React CSS Module, use :global to select classes outside the scope of React CSS Modules but only if parent selector has the '_allowCascade' class.
+        &._allowCascade, & ._allowCascade {
+            &:global:has(*) {@content;}
+        }
+
+
+        //._allowCascade:global{&:has(*) {@content;}}
+        
+        // &._allowCascade, & ._allowCascade {
+        //     :global {@content;}
+        //     /* @@note
+        //         The ':global' keyword above looks like a CSS pseudo-class but is a selector modifier that is only used in React CSS Modules, 
+        //         Selectors/Rules that have it will break or show unexpected behavior if the CSS file is used as regular CSS.
+
+        //         It allows selecting by classes outside the scope of a React CSS module.
+        //      */
+        // }
+    } @else if $__CSS-MODULE__ == false {
+        // If file is regular CSS.
+        & {
+            @content;
+        }
+    }
+}

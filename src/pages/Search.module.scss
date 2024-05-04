@@ -1,0 +1,51 @@
+$__CSS-MODULE__: true;
+@import 'assets/styles/mixins/main.scss';
+
+.container {
+    justify-self: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--atomX3);
+    //justify-content: center;
+    height: fit-content;
+    width: var(--page-width);
+
+    @include _allowCascade {
+        transition: translate 0.5s ease-in-out;
+        translate: 0 50vh;
+        .expose-container {
+            transition: margin-top 0.5s ease-in-out;
+            margin-top: -50%;
+        }
+    }
+
+    &.hasResults {
+        @include _allowCascade {
+            translate: 0 0;
+            .expose-container {
+                margin-top: 0;
+            }
+        }
+        
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--atomX4);
+    padding: var(--atomX3);
+
+    
+    .thumbnailCard {
+        transition: opacity 0.2s ease-in-out;
+    }
+    &:has(.thumbnailCard:hover) {
+        .thumbnailCard {
+            &:not(:hover) {
+                opacity: 0.4;
+            }
+        }
+    }
+}

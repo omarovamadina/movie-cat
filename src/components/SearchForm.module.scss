@@ -1,0 +1,78 @@
+/* @@note
+    Apparently, we need to define variables before importing SCSS files that use them in mixens, 
+    as opposed to defining them only before using the mixens from the imported SCSS files.
+*/
+$__CSS-MODULE__: true;
+@import '/src/assets/styles/mixins/main.scss';
+
+.container {
+    // Styling the Container
+    
+    background-color: var(--clr-bg);
+    border-radius: var(--r2);
+    padding: var(--atomX6);
+    margin-bottom: var(--atomX6);
+
+    // Aligning items inside the Container
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--atomX2);
+
+    .header {
+        height: fit-content;
+        display: grid;
+        grid-auto-flow: column;
+        gap: var(--atomX2);
+        align-items: center;
+        grid-auto-columns: max-content;
+    
+        .icon{
+            //font-size: 0;
+            height: var(--atomX4);
+            width: auto;
+            @include iconStyle(var(--pxlw4));
+        }
+    
+        .heading {
+            width: fit-content;
+            height: fit-content;
+            font-size: var(--atomX4);
+            font-weight: var(--f-medium);
+        }
+    }
+    
+    .subHeading {
+        font-size: var(--atomX3);
+        font-weight: var(--f-semi-bold);
+        width: 100%;
+        //word-wrap: break-word;
+    }
+
+    // .input {
+    //     margin-bottom: var(--atomX8)
+    // }
+
+    .searchButton {
+        @include iconStyle(var(--pxlw4), var(--clr-bg));
+        border: var(--pxlw4) solid var(--clr-content);
+        background-color: var(--clr-content);
+        padding: var(--r2);
+        border-radius: 50%;
+        width: fit-content;
+        height: var(--atomX12);
+        margin: 0 auto;
+        margin-top: calc(-1 * var(--atomX12));
+
+        translate: 0 100%;
+
+        &:hover {
+            translate: 0 calc(100% + var(--pxlw4));
+        }
+        &:active {
+            background-color: var(--clr-hover);
+        }
+    }
+
+
+}

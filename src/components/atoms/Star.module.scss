@@ -1,0 +1,72 @@
+$__CSS-MODULE__: true;
+@import 'assets/styles/mixins/main.scss';
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: fit-content;
+    gap: var(--pxlw3);
+}
+
+.singleStar {
+    position: relative;
+
+    // Variable used for the size of all parts comprising the star.
+    --size: var(--starSize, 1em); 
+    --percentage: var(--fillPercentage, 0); // how much of the star shape should be filled from 0 to 100 (not in percentage units).
+    /* @@note
+        the variables --starSize and --fillPercentage can be cascaded over by other components or with inline css,
+        Doing so will replace the default values of internal variables --size and --percentage.
+
+        The --fillPercentage is provided is inline css in the component itself to set how much of the star is filled.
+    */
+
+    &, .cropper {
+        // Properties shared between the .cropper and .singleStar classes.
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+    &, .starFill {
+        /* @@note
+            There was no way to directly peg the size of an element (.starFill) to the size of it's grandparent (.singleStar),
+            So instead I decided to use the font size for the for the size of the star shapes.
+
+            This will allow me to still set the size of all elements of the component in an intuitive way.
+        */
+        width: var(--size);
+        height: var(--size);
+    }
+    .starFill {
+        @include iconStyle($fillColor: currentColor, $optional: true);
+    }
+    .starStroke, .starFill {
+        @include iconStyle($strokeColor: currentColor);
+    }
+    .starStroke {
+        width: 100%;
+        height: 100%;
+
+        position: absolute;
+        top: 0; left: 0; /* Position stars at top left corner */
+    }
+  
+    .cropper {
+        // Cropping content (i.e. star shape).
+        overflow: hidden;
+
+        // Styling the filled area of the star to have a rounded edge.
+        border-radius: 50%;
+
+        // Variables representing the percentage of empty area on both ends of the svg shape itself.
+        --gt: 14; // top gap%
+        --gb: 16; // bottom gap%
+
+        // Percentage scaled and offset to the percentage between both gaps.
+        --pg: (var(--gb) + var(--percentage) * (1 - ((var(--gt) + var(--gb)) / 100)));
+
+        height: calc(1% * var(--pg));
+        width: fit-content;
+    }
+}

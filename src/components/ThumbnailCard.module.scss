@@ -1,0 +1,92 @@
+$__CSS-MODULE__: true;
+@import '/src/assets/styles/mixins/main.scss';
+
+.container {
+    display: flex;
+    gap: var(--atomX2);
+    flex-direction: column;
+    background-color: var(--clr-bg);
+    color: var(--clr-content);
+    overflow: visible;
+    height: fit-content;
+    box-sizing: border-box;
+    //display: block;
+    padding: var(--atomX2);
+    font-size: var(--atomX2);
+    border-radius: var(--r2);
+    border: var(--pxlw2) solid var(--clr-stroke);
+    
+    
+    &:hover {
+        // When the card is clicked
+        &:active {
+            /* @@note
+                I don't know why but the transition didn't work unless I put it in the context of :hover,
+                Therefore we could only achieve a smooth transtion for when the caard when mouse is down but not for when it's released.
+            */
+            transition: translate 0.2s ease-in-out;
+            translate: 0 var(--atomX1);
+        }
+
+        .image {
+            --movement: var(--atomX2);
+            translate: calc(-1 * var(--movement));
+            transform: scale(1.05);
+        }
+    }
+
+    .header {
+        height: fit-content;
+        display: flex;
+        flex-direction: row;
+        gap: var(--atomX2);
+        align-items: center;
+        grid-auto-columns: max-content;
+        //flex-direction: row-reverse;
+        justify-content: right;
+    
+        &:hover .icon > * {
+            translate: calc(var(--atomX1) / 5) calc(-1 * var(--atomX1) / 5);
+        }
+        .icon{
+            //font-size: 0;
+            padding: var(--pxlw7);
+            border: var(--pxlw5) solid var(--clr-content);
+            border-radius: 50%;
+            height: var(--atomX4);
+            width: auto;
+            @include iconStyle(var(--pxlw5));
+
+            & > * {
+                transition: translate 0.1s ease-out;
+            }
+        }
+    
+        .heading {
+            width: fit-content;
+            height: fit-content;
+            font-size: var(--atomX3);
+            font-weight: var(--f-medium);
+        }
+    }
+
+    .image {
+        transition: translate 0.2s ease-in-out;
+        object-fit: cover;
+        width: 100%;
+        display: block;
+        border-radius: var(--r1);
+    }
+
+    .details {
+        .title {
+            font-size: var(--atomX3);
+            font-weight: var(--f-medium);
+        }
+        .date {
+            font-family: var(--font-secondary);
+            font-size: var(--atomX3);
+            font-weight: var(--f-light);
+        }
+    }
+}

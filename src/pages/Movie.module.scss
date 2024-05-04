@@ -1,0 +1,202 @@
+$__CSS-MODULE__: true;
+@import 'assets/styles/mixins/main.scss';
+
+.container {
+    justify-self: center;
+    --clr-scrollbar-bg: var(--clr-bg);
+
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    height: fit-content;
+    width: calc(var(--atomX1) * 178);
+    overflow: hidden;
+
+    background-color: var(--clr-bg);
+    border-radius: var(--r2);
+    
+    margin-bottom: var(--atomX6);
+    position: relative;
+
+    // Aligning items inside the Container
+    //width: 100%;
+    .content, .visual {
+        overflow: hidden;;
+    }
+    .content {
+        overflow: hidden;
+        width: 50%;
+        padding: var(--atomX3);
+        display: flex;
+        flex-direction: column;
+
+        .mainDetails {
+            padding: var(--atomX4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--atomX1);
+    
+            .date {
+                margin-left: var(--atomX1);
+                font-size: var(--atomX3);
+                font-family: var(--font-secondary);
+                font-weight: var(--f-thin);
+                letter-spacing: 0.16em;
+            }
+    
+            .title {
+                font-size: var(--atomX6);
+                font-weight: var(--f-bold);
+            }
+    
+            .ratingContainer {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                gap: var(--atomX2);
+                font-size: var(--atomX4);
+    
+                @include iconStyle(var(--pxlw4));
+    
+                .number {
+                    font-size: var(--atomX3);
+                    font-family: var(--font-secondary);
+                    font-weight: var(--f-light);
+                }
+                .text {
+                    margin-top: 0.2em;
+                    margin-left: calc(var(--atomX1) * -1);
+                    font-size: var(--atomX2);
+                    font-weight: var(--f-regular);
+                }
+            }
+        }
+
+        .accordion {
+            height: calc(var(--atomX1) * 60);
+
+            .actors {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                overflow: hidden;
+                //display: flex;
+                //flex-direction: column;
+                row-gap: var(--atomX2); /* Vertical gap */
+                column-gap: var(--atomX1); /* Horizontal gap */
+                //overflow-x: auto;
+                .actor {
+                    //background-color: red;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-start;
+                    gap: var(--atomX2);
+                    .pfp {
+                        border-radius: 9999px;
+                        width: var(--atomX6);
+                        height: var(--atomX6);
+                    }
+                    .actorDetails {
+                        display: flex;
+                        flex-direction: column;
+                        font-size: var(--atomX3);
+                        font-weight: var(--f-semi-bold);
+                        .actorName {
+                            font-weight: var(--f-regular);
+                        }
+                        .hint {
+                            font-size: var(--atomX2);
+                            translate: 0 calc(var(--pxlw6));
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
+        }
+    
+        .footer {
+            border-top: var(--pxlw1) solid var(--clr-stroke);
+            padding: var(--atomX1);
+            padding-top: var(--atomX4);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            gap: var(--atomX3);
+            .button {
+                display: block;
+                height: fit-content;
+                padding: var(--atomX3) var(--atomX6);
+                border-radius: var(--pxlw16); // it seems the --r variables didn't have enough precision.'
+                color: var(--clr-bg);
+                background-color: var(--clr-content);
+                white-space: nowrap;
+                font-size: var(--atomX4);
+                font-weight: var(--f-semi-bold);
+
+                transition: translate 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+                &:hover {
+                    translate: 0 var(--pxlw4);
+                }
+                &:active {
+                    background-color: var(--clr-hover);
+                }
+            }
+            .text {
+                padding: 0 var(--atomX4);
+                font-size: var(--atomX2);
+                font-weight: var(--f-medium);
+                span {
+                    font-weight: var(--f-bold);
+                }
+            }
+        }
+
+    }
+    
+    .visual {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 50%;
+        border-radius: var(--r2);
+        overflow: hidden;
+        
+        .image {
+            background-color: red;
+        }
+        .imageButton {
+            font-weight: var(--f-semi-bold);
+            font-size: var(--atomX3);
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            flex-direction: row;
+            gap: var(--atomX2);
+            padding: var(--atomX2);
+            border-radius: 9999px;
+            position: absolute;
+            background-color: var(--clr-bg);
+            top: var(--atomX6);
+            right: var(--atomX6);
+            .icon {
+                @include iconStyle(var(--pxlw3));
+                height:1em;
+                margin: auto;
+            }
+            &:hover {
+                .icon {
+                    translate: var(--pxlw3) calc(var(--pxlw3) * -1);
+                }
+            }
+            &:active {
+                translate: 0 var(--pxlw3);
+            }
+        }
+
+    }
+
+    
+}
